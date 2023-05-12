@@ -20,7 +20,17 @@ namespace MBLittleProfessor2
         private static readonly string sPrgName = "MB Little Professor v2";
         private static readonly string sPrgDate = "(c)12.05.2023";
         private float fRatio, fDx, fDy;
+        private int iMouseXPos, iMouseYPos;
         #endregion // PrivateClassMembers
+
+        #region BUTTON-Definition
+        enum BUTTON { zero, one, two, three, four, five, six, seven, eight, nine, start, level, rnd, add, sub, mul, div, none };
+        private string[] BUTTONname = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "Start", "Level", "1x1", "+", "-", "*", "/" };
+        private int[] BUTTONxp1 = { 156, 095, 156, 218, 095, 156, 218, 095, 156, 218, 035, 035, 035, 279, 279, 279, 279 };
+        private int[] BUTTONyp1 = { 572, 523, 523, 523, 473, 473, 473, 423, 423, 423, 423, 472, 521, 550, 492, 432, 372 };
+        private int[] BUTTONxp2 = { 204, 142, 204, 265, 142, 204, 265, 142, 204, 265, 081, 081, 081, 326, 326, 326, 326 };
+        private int[] BUTTONyp2 = { 604, 553, 553, 553, 504, 504, 504, 455, 455, 455, 455, 504, 553, 593, 535, 475, 416 };
+        #endregion //BUTTON-Definition
 
         #region CustomizeSystemMenu
         /// <summary>
@@ -103,6 +113,26 @@ namespace MBLittleProfessor2
         }
         #endregion //CustomizeSystemMenu
 
+        #region LittleProfessorFunctions
+        void Start()
+        {
+            //ToDo...
+            MessageBox.Show("Starts new calculation task", "Start", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        void Level()
+        {
+            //ToDo...
+            MessageBox.Show("Sets the level of difficulty", "Start", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        void Rnd()
+        {
+            //ToDo...
+            MessageBox.Show("Starts new 1x1 task", "Start", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        #endregion //LittleProfessorFunctions
+
         #region FormMain functions
         /// <summary>
         /// FormMain functions
@@ -139,6 +169,95 @@ namespace MBLittleProfessor2
             pictureBoxBackground.Top = (panelBackground.Height - pictureBoxBackground.Height) / 2;
             pictureBoxBackground.Left = (panelBackground.Width - pictureBoxBackground.Width) / 2;
         }
+
+        private void FormMain_KeyDown(object sender, KeyEventArgs e)
+        {
+                        switch (e.KeyCode)
+            {
+                case Keys.Escape:
+                    DialogResult dialogResult = MessageBox.Show("Are you sure?", String.Format("Exit {0}",sPrgName), MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        Close();
+                    }
+                    e.Handled = true;
+                    break;
+
+                case Keys.F1:
+                    Help();
+                    e.Handled = true;
+                    break;
+
+                case Keys.F2:
+                    About();
+                    e.Handled = true;
+                    break;
+            }
+        }
         #endregion // FormMain functions
+
+        #region PictureBoxFunctions
+        private void pictureBoxBackground_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (iMouseXPos == (int)(e.X / fDx) && iMouseYPos == (int)(e.Y / fDy))
+                return;
+
+            iMouseXPos = (int)(e.X / fDx);
+            iMouseYPos = (int)(e.Y / fDy);
+
+            this.Text = String.Format("{0} [x={1} y={2}]", sPrgName, iMouseXPos, iMouseYPos);
+
+
+            BUTTON button = BUTTON.none;
+            for (int i = 0; i < BUTTONname.Length; i++)
+            {
+                if (e.X >= BUTTONxp1[i] * fDx && e.X < BUTTONxp2[i] * fDx && e.Y >= BUTTONyp1[i] * fDy && e.Y < BUTTONyp2[i] * fDy)
+                {
+                    button = (BUTTON)i;
+                    break;
+                }
+            }
+
+            if (button != BUTTON.none)
+            {
+                if (pictureBoxBackground.Cursor != Cursors.Hand)
+                    pictureBoxBackground.Cursor = Cursors.Hand;
+
+                toolTip1.SetToolTip(pictureBoxBackground, String.Format("{0}", BUTTONname[(int)button]));
+            }
+
+            if (button == BUTTON.none)
+            {
+                if (pictureBoxBackground.Cursor != Cursors.Default)
+                    pictureBoxBackground.Cursor = Cursors.Default;
+                if (toolTip1.GetToolTip(pictureBoxBackground) != "")
+                    toolTip1.SetToolTip(pictureBoxBackground, "");
+            }
+        }
+
+        private void pictureBoxBackground_MouseClick(object sender, MouseEventArgs e)
+        {
+            BUTTON button = BUTTON.none;
+            for (int i=0; i<BUTTONname.Length; i++)
+            {
+                if (e.X >= BUTTONxp1[i] * fDx && e.X < BUTTONxp2[i] * fDx && e.Y >= BUTTONyp1[i] * fDy && e.Y < BUTTONyp2[i] * fDy)
+                {
+                    button = (BUTTON)i;
+                    break;
+                }
+            }
+
+            if(button!=BUTTON.none)
+            {
+                if (BUTTONname[(int)button] == "Start")
+                    Start();
+                else if (BUTTONname[(int)button] == "Level")
+                    Level();
+                else if (BUTTONname[(int)button] == "1x1")
+                    Rnd();
+            }
+
+        }
+        #endregion // PictureBoxFunctions
     }
 }
