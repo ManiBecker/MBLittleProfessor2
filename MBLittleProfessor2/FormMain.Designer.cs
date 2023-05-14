@@ -33,6 +33,7 @@
             this.panelBackground = new System.Windows.Forms.Panel();
             this.pictureBoxBackground = new System.Windows.Forms.PictureBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.timerDisplay = new System.Windows.Forms.Timer(this.components);
             this.panelBackground.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxBackground)).BeginInit();
             this.SuspendLayout();
@@ -42,27 +43,32 @@
             this.panelBackground.Controls.Add(this.pictureBoxBackground);
             this.panelBackground.Location = new System.Drawing.Point(12, 12);
             this.panelBackground.Name = "panelBackground";
-            this.panelBackground.Size = new System.Drawing.Size(200, 198);
+            this.panelBackground.Size = new System.Drawing.Size(304, 497);
             this.panelBackground.TabIndex = 1;
             // 
             // pictureBoxBackground
             // 
             this.pictureBoxBackground.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.pictureBoxBackground.Image = global::MBLittleProfessor2.Properties.Resources.TI_Little_Professor_1991;
-            this.pictureBoxBackground.Location = new System.Drawing.Point(55, 16);
+            this.pictureBoxBackground.Location = new System.Drawing.Point(16, 18);
             this.pictureBoxBackground.Name = "pictureBoxBackground";
-            this.pictureBoxBackground.Size = new System.Drawing.Size(91, 167);
+            this.pictureBoxBackground.Size = new System.Drawing.Size(272, 461);
             this.pictureBoxBackground.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBoxBackground.TabIndex = 1;
             this.pictureBoxBackground.TabStop = false;
             this.pictureBoxBackground.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBoxBackground_MouseMove);
             this.pictureBoxBackground.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pictureBoxBackground_MouseClick);
+            this.pictureBoxBackground.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBoxBackground_Paint);
+            // 
+            // timerDisplay
+            // 
+            this.timerDisplay.Tick += new System.EventHandler(this.timerDisplay_Tick);
             // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(235, 400);
+            this.ClientSize = new System.Drawing.Size(328, 533);
             this.Controls.Add(this.panelBackground);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormMain";
@@ -81,6 +87,7 @@
         private System.Windows.Forms.Panel panelBackground;
         private System.Windows.Forms.PictureBox pictureBoxBackground;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.Timer timerDisplay;
 
     }
 }

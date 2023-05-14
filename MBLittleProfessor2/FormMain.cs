@@ -17,6 +17,7 @@ namespace MBLittleProfessor2
         /// <summary>
         /// Private class menbers
         /// </summary>
+        private static MBLittleProfessor2 clLittleProfessor2;
         private static readonly string sPrgName = "MB Little Professor v2";
         private static readonly string sPrgDate = "(c)12.05.2023";
         private float fRatio, fDx, fDy;
@@ -113,26 +114,6 @@ namespace MBLittleProfessor2
         }
         #endregion //CustomizeSystemMenu
 
-        #region LittleProfessorFunctions
-        void Start()
-        {
-            //ToDo...
-            MessageBox.Show("Starts new calculation task", "Start", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        void Level()
-        {
-            //ToDo...
-            MessageBox.Show("Sets the level of difficulty", "Start", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        void Rnd()
-        {
-            //ToDo...
-            MessageBox.Show("Starts new 1x1 task", "Start", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-        #endregion //LittleProfessorFunctions
-
         #region FormMain functions
         /// <summary>
         /// FormMain functions
@@ -147,6 +128,9 @@ namespace MBLittleProfessor2
             fRatio = (float)pictureBoxBackground.Image.Width / (float)pictureBoxBackground.Image.Height;
             panelBackground.Dock = DockStyle.Fill;
             FormMain_Resize(sender, e);
+
+            clLittleProfessor2 = new MBLittleProfessor2();
+            timerDisplay.Enabled = true;
         }
 
         private void FormMain_Resize(object sender, EventArgs e)
@@ -172,31 +156,106 @@ namespace MBLittleProfessor2
 
         private void FormMain_KeyDown(object sender, KeyEventArgs e)
         {
-                        switch (e.KeyCode)
+            // Überprüfe, ob die Escape-Taste gedrückt wurde
+            if (e.KeyCode == Keys.Escape)
             {
-                case Keys.Escape:
-                    DialogResult dialogResult = MessageBox.Show("Are you sure?", String.Format("Exit {0}",sPrgName), MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
-                    if (dialogResult == DialogResult.Yes)
-                    {
-                        Close();
-                    }
-                    e.Handled = true;
-                    break;
-
-                case Keys.F1:
-                    Help();
-                    e.Handled = true;
-                    break;
-
-                case Keys.F2:
-                    About();
-                    e.Handled = true;
-                    break;
+                Application.Exit();
             }
+
+            // Überprüfe, ob die F1-Taste gedrückt wurde
+            if (e.KeyCode == Keys.F1)
+            {
+                Help();
+            }
+
+            // Überprüfe, ob die F2-Taste gedrückt wurde
+            if (e.KeyCode == Keys.F2)
+            {
+                About();
+            }
+            
+            // Überprüfen, ob eine Zifferntaste gedrückt wurde (von der Haupttastatur oder der numerischen Tastatur)
+            if ((e.KeyCode >= Keys.D0 && e.KeyCode <= Keys.D9) || (e.KeyCode >= Keys.NumPad0 && e.KeyCode <= Keys.NumPad9))
+            {
+                int nZiffer = -1;
+
+                if (e.KeyCode >= Keys.D0 && e.KeyCode <= Keys.D9)
+                {
+                    nZiffer = e.KeyCode - Keys.D0;
+                }
+                else
+                {
+                    nZiffer = e.KeyCode - Keys.NumPad0;
+                }
+
+                if (nZiffer >= 0 && nZiffer <= 9)
+                    clLittleProfessor2.SetInput(nZiffer);
+            }
+
+            // Überprüfe, ob eine der Funktionstasten +,-,*,/,S,L,R,H gedrückt wurde
+            if (e.KeyCode == Keys.Add || (e.Shift == false && e.KeyValue == 187))
+            {
+                clLittleProfessor2.NextAddition();
+            }
+            else if (e.KeyCode == Keys.Subtract || (e.Shift == false && e.KeyValue == 189))
+            {
+                clLittleProfessor2.NextSubtraction();
+            }
+            else if (e.KeyCode == Keys.Multiply || (e.Shift == true && e.KeyValue == 187))
+            {
+                clLittleProfessor2.NextMultiplication();
+            }
+            else if (e.KeyCode == Keys.Divide || (e.Shift == true && e.KeyValue == 55))
+            {
+                clLittleProfessor2.NextDivision();
+            }
+            else if (e.KeyCode == Keys.S)
+            {
+                clLittleProfessor2.Start();
+            }
+            else if (e.KeyCode == Keys.L)
+            {
+                clLittleProfessor2.NextLevel();
+            }
+            else if (e.KeyCode == Keys.R)
+            {
+                clLittleProfessor2.Next1x1();
+            }
+            else if (e.KeyCode == Keys.H)
+            {
+                // checkBoxHint.Checked = !checkBoxHint.Checked;
+            }
+
+            pictureBoxBackground.Refresh();
         }
         #endregion // FormMain functions
 
         #region PictureBoxFunctions
+        private void pictureBoxBackground_Paint(object sender, PaintEventArgs e)
+        {
+            //draw text on image
+            using (Font arialFont = new Font("Consolas" /*"Bodoni MT"*/, 24 * fDx))
+            {
+                float x = 55 * fDx;
+                float y = 175 * fDy - arialFont.Height;
+                e.Graphics.DrawString(clLittleProfessor2.GetDisplay(), arialFont, Brushes.Black, x, y);
+            }
+            //draw text on image
+            using (Font arialFont = new Font("Consolas" /*"Bodoni MT"*/, 10 * fDx))
+            {
+                float x = 75 * fDx;
+                float y = 190 * fDy - arialFont.Height;
+                e.Graphics.DrawString(clLittleProfessor2.GetLevel(), arialFont, Brushes.Black, x, y);
+            }
+            //draw text on image
+            using (Font arialFont = new Font("Consolas" /*"Bodoni MT"*/, 20 * fDx))
+            {
+                float x = 135 * fDx;
+                float y = 200 * fDy - arialFont.Height;
+                e.Graphics.DrawString(clLittleProfessor2.GetRating(), arialFont, Brushes.Black, x, y);
+            }
+        }
+
         private void pictureBoxBackground_MouseMove(object sender, MouseEventArgs e)
         {
             if (iMouseXPos == (int)(e.X / fDx) && iMouseYPos == (int)(e.Y / fDy))
@@ -249,15 +308,81 @@ namespace MBLittleProfessor2
 
             if(button!=BUTTON.none)
             {
-                if (BUTTONname[(int)button] == "Start")
-                    Start();
-                else if (BUTTONname[(int)button] == "Level")
-                    Level();
-                else if (BUTTONname[(int)button] == "1x1")
-                    Rnd();
+                if ((int)button >= 0 && (int)button <= 9)
+                    clLittleProfessor2.SetInput((int)button);
+                else if (button == BUTTON.start)
+                    clLittleProfessor2.Start();
+                else if (button == BUTTON.level)
+                    clLittleProfessor2.NextLevel();
+                else if (button == BUTTON.rnd)
+                    clLittleProfessor2.Next1x1();
+                else if (button == BUTTON.add)
+                    clLittleProfessor2.NextAddition();
+                else if (button == BUTTON.sub)
+                    clLittleProfessor2.NextSubtraction();
+                else if (button == BUTTON.mul)
+                    clLittleProfessor2.NextMultiplication();
+                else if (button == BUTTON.div)
+                    clLittleProfessor2.NextDivision();
+
+                pictureBoxBackground.Refresh();
             }
 
         }
         #endregion // PictureBoxFunctions
+
+        private void timerDisplay_Tick(object sender, EventArgs e)
+        {
+            if (clLittleProfessor2.GetSolutionNoteTicker() > 0)
+            {
+                clLittleProfessor2.DecSolutionNoteTicker();
+
+                if (clLittleProfessor2.GetSolutionNoteTicker() == 1)
+                {
+                    clLittleProfessor2.ShowSolutionNote();
+                    pictureBoxBackground.Refresh();
+                }
+            }
+
+            if (clLittleProfessor2.GetNextCalculationTicker() > 0)
+            {
+                clLittleProfessor2.DecNextCalculationTicker();
+
+                if (clLittleProfessor2.GetNextCalculationTicker() == 1)
+                {
+                    clLittleProfessor2.NextCalculation();
+                    pictureBoxBackground.Refresh();
+                }
+            }
+
+            if (clLittleProfessor2.GetSameCalculationTicker() > 0)
+            {
+                clLittleProfessor2.DecSameCalculationTicker();
+
+                if (clLittleProfessor2.GetSameCalculationTicker() == 1)
+                {
+                    clLittleProfessor2.SameCalculation();
+                    pictureBoxBackground.Refresh();
+                }
+            }
+
+            if (clLittleProfessor2.Get1x1CalculationTicker() > 0)
+            {
+                clLittleProfessor2.Dec1x1CalculationTicker();
+                pictureBoxBackground.Refresh();
+            }
+
+            if (clLittleProfessor2.GetShowCompleteResultTicker() > 0)
+            {
+                clLittleProfessor2.DecShowCompleteResultTicker();
+                if (clLittleProfessor2.GetShowCompleteResultTicker() == 1)
+                {
+                    clLittleProfessor2.ResetCalculations();
+                    clLittleProfessor2.NextCalculation();
+                    pictureBoxBackground.Refresh();
+                }
+            }
+        }
+
     }
 }
