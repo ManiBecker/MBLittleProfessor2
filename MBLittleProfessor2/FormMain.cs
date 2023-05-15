@@ -233,26 +233,47 @@ namespace MBLittleProfessor2
         #region PictureBoxFunctions
         private void pictureBoxBackground_Paint(object sender, PaintEventArgs e)
         {
-            //draw text on image
-            using (Font arialFont = new Font("Consolas" /*"Bodoni MT"*/, 24 * fDx))
+            // draw displayed text on image
+            using (Font arialFont = new Font("Consolas", 24 * fDx))
             {
                 float x = 55 * fDx;
                 float y = 175 * fDy - arialFont.Height;
                 e.Graphics.DrawString(clLittleProfessor2.GetDisplay(), arialFont, Brushes.Black, x, y);
             }
-            //draw text on image
-            using (Font arialFont = new Font("Consolas" /*"Bodoni MT"*/, 10 * fDx))
+            // draw level as text on image
+            using (Font arialFont = new Font("Consolas", 10 * fDx))
             {
                 float x = 75 * fDx;
                 float y = 190 * fDy - arialFont.Height;
                 e.Graphics.DrawString(clLittleProfessor2.GetLevel(), arialFont, Brushes.Black, x, y);
             }
-            //draw text on image
-            using (Font arialFont = new Font("Consolas" /*"Bodoni MT"*/, 20 * fDx))
+            // draw rating as text on image
+            using (Font arialFont = new Font("Consolas", 20 * fDx))
             {
                 float x = 135 * fDx;
                 float y = 200 * fDy - arialFont.Height;
                 e.Graphics.DrawString(clLittleProfessor2.GetRating(), arialFont, Brushes.Black, x, y);
+            }
+
+            // draw icon-image on background
+            String icon = clLittleProfessor2.GetIcon();
+            Image image = Properties.Resources.TI_Little_Professor_Icon_1;
+            if (icon == "J") // :)
+                image = Properties.Resources.TI_Little_Professor_Icon_2; 
+            else if (icon == "K") // :|
+                image = Properties.Resources.TI_Little_Professor_Icon_1;
+            else if (icon == "L") // :(
+                image = Properties.Resources.TI_Little_Professor_Icon_3;
+
+            using(image) //if (true) //using (Image image = Properties.Resources.TI_Little_Professor_Icon_1)
+            {
+                float x = 260 * fDx;
+                float y = 140 * fDy;
+                float w = 46 * fDx;
+                float h = 46 * fDy;
+
+                Rectangle imageRect = new Rectangle((int)x, (int)y, (int)w, (int)h);
+                e.Graphics.DrawImage(image, imageRect);
             }
         }
 
@@ -340,8 +361,8 @@ namespace MBLittleProfessor2
                 if (clLittleProfessor2.GetSolutionNoteTicker() == 1)
                 {
                     clLittleProfessor2.ShowSolutionNote();
-                    pictureBoxBackground.Refresh();
                 }
+                pictureBoxBackground.Refresh();
             }
 
             if (clLittleProfessor2.GetNextCalculationTicker() > 0)
@@ -351,8 +372,8 @@ namespace MBLittleProfessor2
                 if (clLittleProfessor2.GetNextCalculationTicker() == 1)
                 {
                     clLittleProfessor2.NextCalculation();
-                    pictureBoxBackground.Refresh();
                 }
+                pictureBoxBackground.Refresh();
             }
 
             if (clLittleProfessor2.GetSameCalculationTicker() > 0)
@@ -362,8 +383,8 @@ namespace MBLittleProfessor2
                 if (clLittleProfessor2.GetSameCalculationTicker() == 1)
                 {
                     clLittleProfessor2.SameCalculation();
-                    pictureBoxBackground.Refresh();
                 }
+                pictureBoxBackground.Refresh();
             }
 
             if (clLittleProfessor2.Get1x1CalculationTicker() > 0)
@@ -379,8 +400,8 @@ namespace MBLittleProfessor2
                 {
                     clLittleProfessor2.ResetCalculations();
                     clLittleProfessor2.NextCalculation();
-                    pictureBoxBackground.Refresh();
                 }
+                pictureBoxBackground.Refresh();
             }
         }
 
