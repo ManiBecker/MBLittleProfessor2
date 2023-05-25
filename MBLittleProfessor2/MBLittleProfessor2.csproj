@@ -92,6 +92,12 @@
   <ItemGroup>
     <None Include="images\TI_Little_Professor_Icon_3.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="images\TI_Little_Professor_Icon_4.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\TI_Little_Professor_Icon_0.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -31,9 +31,9 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.panelBackground = new System.Windows.Forms.Panel();
+            this.pictureBoxBackground = new System.Windows.Forms.PictureBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.timerDisplay = new System.Windows.Forms.Timer(this.components);
-            this.pictureBoxBackground = new System.Windows.Forms.PictureBox();
             this.panelBackground.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxBackground)).BeginInit();
             this.SuspendLayout();
@@ -45,11 +45,6 @@
             this.panelBackground.Name = "panelBackground";
             this.panelBackground.Size = new System.Drawing.Size(304, 497);
             this.panelBackground.TabIndex = 1;
-            // 
-            // timerDisplay
-            // 
-            this.timerDisplay.Interval = 50;
-            this.timerDisplay.Tick += new System.EventHandler(this.timerDisplay_Tick);
             // 
             // pictureBoxBackground
             // 
@@ -64,6 +59,11 @@
             this.pictureBoxBackground.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBoxBackground_MouseMove);
             this.pictureBoxBackground.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pictureBoxBackground_MouseClick);
             this.pictureBoxBackground.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBoxBackground_Paint);
+            // 
+            // timerDisplay
+            // 
+            this.timerDisplay.Interval = 10;
+            this.timerDisplay.Tick += new System.EventHandler(this.timerDisplay_Tick);
             // 
             // FormMain
             // 

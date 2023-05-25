@@ -67,6 +67,13 @@ namespace MBLittleProfessor2.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap TI_Little_Professor_Icon_0 {
+            get {
+                object obj = ResourceManager.GetObject("TI_Little_Professor_Icon_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap TI_Little_Professor_Icon_1 {
             get {
                 object obj = ResourceManager.GetObject("TI_Little_Professor_Icon_1", resourceCulture);
@@ -84,6 +91,13 @@ namespace MBLittleProfessor2.Properties {
         internal static System.Drawing.Bitmap TI_Little_Professor_Icon_3 {
             get {
                 object obj = ResourceManager.GetObject("TI_Little_Professor_Icon_3", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap TI_Little_Professor_Icon_4 {
+            get {
+                object obj = ResourceManager.GetObject("TI_Little_Professor_Icon_4", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -9,7 +9,7 @@
  Modul   : MBLittleProfessor2.cs
  Version : 1.00
  Datum   : 15.05.2023
- Änderung: 15.05.2023
+ Änderung: 25.05.2023
 
 \****************************************************************************/
 
@@ -22,14 +22,16 @@ namespace MBLittleProfessor2
 {
     class MBLittleProfessor2
     {
-        public enum MathOperation { ADD, SUB, MUL, DIV }; // Deklaration des Operationen +,-,*,/
-        public const int MinLevel = 1; // Deklaration des minimalen Level Wert
-        public const int MaxLevel = 5; // Deklaration des maximalen Level Wert
-        public const int MaxNumberOfCalculations = 5; // Deklaration der Anzahl an Berechnungen
-        public const int MaxNumberOfTrials = 2; // Deklaration der Anzahl an Fehlveruchen
-        private string[] grading = new string[] { "sehr gut!", "gut", "befriedigend", "ausreichend", "mangelhaft", "ungenügend" };
+        #region PublicClassMembers
+        public enum MathOperation { ADD, SUB, MUL, DIV }; // Declaration of the operations +,-,*,/
+        public const int MinLevel = 1; // Declaration of the minimum level value
+        public const int MaxLevel = 5; // Declaration of the maximum level value
+        public const int MaxNumberOfCalculations = 5; // Declaration of the number of calculations
+        public const int MaxNumberOfTrials = 2; // Declaration of the number of failed tests
+        #endregion // PublicClassMembers
 
-        // Private Variable
+        #region PrivateClassMembers
+        private string[] grading = new string[] { "very good!", "good", "satisfactory", "sufficient", "poor", "insufficient" };
         private int nLevel;
         private MathOperation eOP;
         private int nOP1, nOP2, nMinOP1, nMinOP2, nMaxOP1, nMaxOP2, nResult, nInput, nOP1X1, nOP1X1Input;
@@ -37,124 +39,54 @@ namespace MBLittleProfessor2
         private string sExercise, sInput, sHint, sRating, sIcon;
         private int NumberOfCalculations, NumberOfCorrectCalculations, NumberOfFalseCalculations, NumberOfTrials;
         private int nNextCalculationTicker, nSameCalculationTicker, nShowCompleteResultTicker, nSolutionNoteTicker, n1x1CalculationTicker;
+        private int nShowCompleteResultTickerDivider, n1x1CalculationTickerDivider;
         private int nRatingIndex = 4, nRatingDirection = -1;
+        #endregion // PrivateClassMembers
 
-        // Konstruktor
+        #region Constructor
         public MBLittleProfessor2()
         {
             Start();
         }
-        
-        // Getter-Methoden
-        public string GetLevel() { return nLevel.ToString(); }
+        #endregion // Constructor
+
+        #region GetterMethods
+        public string GetLevel()
+        {
+            if (sHint == "Error!")
+                return "";
+            else
+                return ("    " + nLevel.ToString()).Substring(5-nLevel,nLevel); 
+        }
         public int GetOP1() { return nOP1; }
         public int GetOP2() { return nOP2; }
         public string GetResult() { return nResult.ToString(); }
         public string GetHint() { return sHint; }
-        public string GetRating() { return sRating; }
+        public string GetRating()
+        {
+            if (sHint == "Error!")
+                return "";
+            else
+                return sRating; 
+        }
         public string GetIcon() { return sIcon; }
         public int GetNumberOfCalculations() { return NumberOfCalculations; }
         public int GetNumberOfCorrectCalculations() { return NumberOfCorrectCalculations; }
         public int GetNumberOfFalseCalculations() { return NumberOfFalseCalculations; }
         public int GetNumberOfTrials() { return NumberOfTrials; }
         public int GetNextCalculationTicker() { return nNextCalculationTicker; }
-        public void DecNextCalculationTicker()
-        { 
-            nNextCalculationTicker--;
-
-            if(nNextCalculationTicker > 0)
-            {
-                if (sHint == "Correct!")
-                {
-                    if (sIcon == "J")
-                        sIcon = "K"; // :|
-                    else
-                        sIcon = "J"; // :)
-                }
-            }
-        }
         public int GetSameCalculationTicker() { return nSameCalculationTicker; }
-        public void DecSameCalculationTicker()
-        { 
-            nSameCalculationTicker--;
-            
-            if (nSameCalculationTicker > 0)
-            {
-                if (sHint == "Error!")
-                {
-                    if (sIcon == "L")
-                        sIcon = "K"; // :|
-                    else
-                        sIcon = "L"; // :(
-                }
-            }
-        }
         public int GetShowCompleteResultTicker() { return nShowCompleteResultTicker; }
-        public void DecShowCompleteResultTicker()
-        { 
-            nShowCompleteResultTicker--;
-
-            if (nShowCompleteResultTicker > 0 && NumberOfFalseCalculations == 0)
-            {
-                sRating = "    *    ".Substring(nRatingIndex, 5);
-                nRatingIndex = nRatingIndex + nRatingDirection;
-                if (nRatingIndex == 0 || nRatingIndex == 4) nRatingDirection = nRatingDirection * -1;
-
-                if (sIcon == "J")
-                    sIcon = "K"; // :|
-                else
-                    sIcon = "J"; // :)
-            }
-        }
         public int GetSolutionNoteTicker() { return nSolutionNoteTicker; }
-        public void DecSolutionNoteTicker() 
-        { 
-            nSolutionNoteTicker--;
-
-            if (nSolutionNoteTicker > 0)
-            {
-                if (sHint == "Error!")
-                {
-                    if (sIcon == "L")
-                        sIcon = "K"; // :|
-                    else
-                        sIcon = "L"; // :(
-                }
-            }
-        }
         public int Get1x1CalculationTicker() { return n1x1CalculationTicker; }
         public string GetInput() { return sInput; }
         public string GetExercise() { return sExercise; }
-        public string GetDisplay() { return sExercise + sInput; }
-
-        public void Dec1x1CalculationTicker()
+        public string GetDisplay()
         {
-
-            if (n1x1CalculationTicker > 0 && n1x1CalculationTicker <= 4)
-            {
-                n1x1CalculationTicker--; 
-                if (n1x1CalculationTicker == 0) n1x1CalculationTicker = 4;
-                eOP = (MathOperation)n1x1CalculationTicker - 1;
-
-
-                sExercise = "   " + GetMathOperation() + "  =";
-                sHint = "+,-,*,/ ?";
-            }
-            else if (n1x1CalculationTicker > 4 && n1x1CalculationTicker <= 40)
-            {
-                if (n1x1CalculationTicker == 40)
-                {
-                    Random rand = new Random();
-                    nOP1X1 = rand.Next(1, nMaxOP2);
-                    nOP1X1Input = -1;
-                }
-                n1x1CalculationTicker--;
-                if (n1x1CalculationTicker == 4)
-                {
-                    n1x1CalculationTicker = 0;
-                    ResetInput();
-                }
-            }
+            if (sHint == "Error!")
+                return "       Err";
+            else
+                return sExercise + sInput; 
         }
 
         public string GetMathOperation()
@@ -179,18 +111,139 @@ namespace MBLittleProfessor2
 
             return sResult;
         }
+        #endregion // GetterMethods
+
+        #region DecreaseTickerMethods
+        public void DecNextCalculationTicker()
+        {
+            nNextCalculationTicker--;
+
+            if (nNextCalculationTicker > 0)
+            {
+                if (sHint == "Correct!")
+                {
+                    if (sIcon == "1")
+                        sIcon = "2";
+                    else if (sIcon == "2")
+                        sIcon = "3";
+                    else if (sIcon == "3")
+                        sIcon = "4";
+                    else
+                        sIcon = "1";
+                }
+            }
+        }
+
+        public void DecSameCalculationTicker()
+        {
+            nSameCalculationTicker--;
+
+            if (nSameCalculationTicker > 0)
+            {
+                if (sHint == "Error!")
+                {
+                    sIcon = "0";
+                }
+            }
+        }
+
+        public void DecShowCompleteResultTicker()
+        {
+            nShowCompleteResultTicker--;
+
+            if (NumberOfFalseCalculations == 0)
+            {
+                if (nShowCompleteResultTicker > 60)
+                {
+                    if (sIcon == "1")
+                        sIcon = "2";
+                    else if (sIcon == "2")
+                        sIcon = "3";
+                    else if (sIcon == "3")
+                        sIcon = "4";
+                    else
+                        sIcon = "1";
+
+                    nShowCompleteResultTickerDivider++;
+                    if (nShowCompleteResultTickerDivider >= 6)
+                    {
+                        nShowCompleteResultTickerDivider = 0;
+                        sRating = "    *    ".Substring(nRatingIndex, 5);
+                        nRatingIndex = nRatingIndex + nRatingDirection;
+                        if (nRatingIndex == 0 || nRatingIndex == 4) nRatingDirection = nRatingDirection * -1;
+                    }
+                }
+                else if (nShowCompleteResultTicker > 0)
+                {
+                    sIcon = "1";
+                    sRating = "*****";
+                }
+            }
+        }
+
+        public void DecSolutionNoteTicker()
+        {
+            nSolutionNoteTicker--;
+
+            if (nSolutionNoteTicker > 0)
+            {
+                if (sHint == "Error!")
+                {
+                    sIcon = "0";
+                }
+            }
+        }
+
+        public void Dec1x1CalculationTicker()
+        {
+
+            if (n1x1CalculationTicker > 0 && n1x1CalculationTicker <= 4)
+            {
+                n1x1CalculationTickerDivider++;
+                if (n1x1CalculationTickerDivider >= 20)
+                {
+                    n1x1CalculationTickerDivider = 0;
+                    n1x1CalculationTicker--;
+                }
+                if (n1x1CalculationTicker == 0) n1x1CalculationTicker = 4;
+                eOP = (MathOperation)n1x1CalculationTicker - 1;
 
 
-        // Setter-Methoden
+                sExercise = "   " + GetMathOperation() + "  =";
+                sHint = "+,-,*,/ ?";
+            }
+            else if (n1x1CalculationTicker > 4 && n1x1CalculationTicker <= 200)
+            {
+
+                if (n1x1CalculationTicker == 200)
+                {
+                    Random rand = new Random();
+                    nOP1X1 = rand.Next(1, nMaxOP2);
+                    nOP2 = nOP1X1;
+                    nOP1X1Input = -1;
+                    SetLevel(nLevel);
+                }
+
+                n1x1CalculationTicker--;
+                if (n1x1CalculationTicker == 4)
+                {
+                    n1x1CalculationTicker = 0;
+                    ResetInput();
+                }
+            }
+        }
+        #endregion // DecreaseTickerMethods
+
+        #region SetterMethods
         private void SetMathOperation(MathOperation op)
         {
             eOP = op;
         }
 
-        // Spielstufe setzen, die beiden Operatoren ermitteln und das Ergebnis berechnen
+        // Set the game level, determine the two operators and calculate the result
         public void SetLevel(int level)
         {
-            // Level darf nur zwischen 1 und 5 sein
+            // Level may only be between 1 and 5
             if (level < MinLevel)
                 nLevel = MinLevel;
             else if (level > MaxLevel)
@@ -198,27 +251,39 @@ namespace MBLittleProfessor2
             else
                 nLevel = level;
 
-            // je nach Lavel die Operanden im Wert eingrenzen
-            switch (nLevel)
+            // depending on the operation and lavel, limit the operands in value
+            switch (eOP)
             {
-                case 1: nMinOP1 = 0; nMinOP2 = 0; nMaxOP1 = 10; nMaxOP2 = 10; if (eOP == MathOperation.DIV || nOP1X1 > 0) nMaxOP1 = 50; break;
-                case 2: nMinOP1 = 1; nMinOP2 = 1; nMaxOP1 = 100; nMaxOP2 = 20; break;
-                case 3: nMinOP1 = 10; nMinOP2 = 1; nMaxOP1 = 100; nMaxOP2 = 50; if (eOP == MathOperation.DIV) { nMaxOP1 = 200; nMaxOP2 = 20; } break;
-                case 4: nMinOP1 = 10; nMinOP2 = 10; nMaxOP1 = 200; nMaxOP2 = 100; break;
-                case 5: nMinOP1 = 100; nMinOP2 = 10; nMaxOP1 = 1000; nMaxOP2 = 100; break;
+                case MathOperation.ADD:
+                case MathOperation.SUB:
+                case MathOperation.MUL:
+                    switch (nLevel)
+                    {
+                        case 1: nMinOP1 = 0; nMinOP2 = 0; nMaxOP1 = 10; nMaxOP2 = 10; break;
+                        case 2: nMinOP1 = 1; nMinOP2 = 1; nMaxOP1 = 20; nMaxOP2 = 20; break;
+                        case 3: nMinOP1 = 5; nMinOP2 = 5; nMaxOP1 = 50; nMaxOP2 = 50; break;
+                        case 4: nMinOP1 = 10; nMinOP2 = 10; nMaxOP1 = 99; nMaxOP2 = 99; break;
+                        case 5: nMinOP1 = 100; nMinOP2 = 10; nMaxOP1 = 999; nMaxOP2 = 99; break;
+                    }
+                    break;
+                case MathOperation.DIV:
+                    switch (nLevel)
+                    {
+                        case 1: nMinOP1 = 0; nMinOP2 = 1; nMaxOP1 = 25; nMaxOP2 = 10; break;
+                        case 2: nMinOP1 = 5; nMinOP2 = 1; nMaxOP1 = 50; nMaxOP2 = 25; break;
+                        case 3: nMinOP1 = 10; nMinOP2 = 1; nMaxOP1 = 250; nMaxOP2 = 50; break;
+                        case 4: nMinOP1 = 50; nMinOP2 = 5; nMaxOP1 = 500; nMaxOP2 = 75; break;
+                        case 5: nMinOP1 = 100; nMinOP2 = 10; nMaxOP1 = 999; nMaxOP2 = 99; break;
+                    }
+                    break;
             }
 
-            // Bei einer Division darf der zweite Operand nie 0 sein
-            if (eOP == MathOperation.DIV && nMinOP2 == 0)
-            {
-                nMinOP2 = 1; //Division / 0 verhindern
-            }
-
+            // Create new random numbers and make sure that they are not identical to the previous random numbers
             do
             {
                 Random rand = new Random();
-                nOP1 = rand.Next(nMinOP1, nMaxOP1);
-                nOP2 = rand.Next(nMinOP2, nMaxOP2);
+                nOP1 = rand.Next(nMinOP1, nMaxOP1+1);
+                nOP2 = rand.Next(nMinOP2, nMaxOP2+1);
                 if (nOP1X1 > 0) nOP2 = nOP1X1;
                 switch (eOP)
                 {
@@ -228,8 +293,8 @@ namespace MBLittleProfessor2
                     case MathOperation.SUB:
                         while (nOP1 < nOP2)
                         {
-                            nOP1 = rand.Next(nMinOP1, nMaxOP1);
-                            nOP2 = rand.Next(nMinOP2, nMaxOP2);
+                            nOP1 = rand.Next(nMinOP1, nMaxOP1+1);
+                            nOP2 = rand.Next(nMinOP2, nMaxOP2+1);
                             if (nOP1X1 > 0)
                             {
                                 nOP2 = nOP1X1;
@@ -240,8 +305,8 @@ namespace MBLittleProfessor2
                     case MathOperation.MUL:
                         while (nOP1 * nOP2 > 10000)
                         {
-                            nOP1 = rand.Next(nMinOP1, nMaxOP1);
-                            nOP2 = rand.Next(nMinOP2, nMaxOP2);
+                            nOP1 = rand.Next(nMinOP1, nMaxOP1+1);
+                            nOP2 = rand.Next(nMinOP2, nMaxOP2+1);
                             if (nOP1X1 > 0) nOP2 = nOP1X1;
                         }
                         nResult = nOP1 * nOP2;
@@ -249,7 +314,7 @@ namespace MBLittleProfessor2
                     case MathOperation.DIV:
                         while (nOP1 % nOP2 > 0)
                         {
-                            nOP1 = rand.Next(nMinOP1, nMaxOP1);
+                            nOP1 = rand.Next(nMinOP1, nMaxOP1+1);
                         }
                         nResult = (int)(nOP1 / nOP2);
                         break;
@@ -260,27 +325,22 @@ namespace MBLittleProfessor2
 
             ResetInput();
         }
+        #endregion // SetterMethods
 
-        // Eingabe zurücksetzen und Aufgabenrechnung zusammensetzen
-        public void ResetInput()
+        #region GameFunctions
+        // Start or reset the game
+        public void Start()
         {
-            if (n1x1CalculationTicker > 0)
-            {
-                sHint = "OP2?";
-                sExercise = "   " + GetMathOperation() + nOP2.ToString().PadLeft(2) + "=";
-            }
-            else
-            {
-                sHint = "Input?";
-                sIcon = "?";
-                sExercise = nOP1.ToString().PadLeft(3) + GetMathOperation() + nOP2.ToString().PadLeft(2) + "=";
-            }
-
-            sInput = "";
-            nInput = -1;
+            eOP = MathOperation.ADD;
+            n1x1CalculationTicker = 0;
+            nOP1X1 = -1;
+            nOP1X1Input = -1;
+            nOP1old = nOP2old = -1;
+            nLevel = 0;
+            NextLevel();
         }
-        
-        // Spielstufe erhöhen
+
+        // Increase game level
         public void NextLevel()
         {
             ResetCalculations();
@@ -290,135 +350,62 @@ namespace MBLittleProfessor2
                 SetLevel(nLevel + 1);
         }
 
-        // Spielergebnis anzeigen
-        private void ShowCompleteResult()
-        {
-            int nGrade = MaxNumberOfCalculations - NumberOfCorrectCalculations;
-
-            sExercise = String.Format("+" + NumberOfCorrectCalculations.ToString()).PadLeft(6);
-            sInput = "  -" + NumberOfFalseCalculations.ToString();
-
-            sHint = grading[nGrade];
-
-            if (nGrade == 0 || nGrade == 1)
-                sIcon = "J"; // :)
-            else if (nGrade == 2 || nGrade == 3)
-                sIcon = "K"; // :|
-            else
-                sIcon = "L"; // :(
-
-            nShowCompleteResultTicker = 40;
-        }
-
-        // Nächste Berechnung ermitteln
-        public void NextCalculation()
-        {
-            if (NumberOfCalculations == MaxNumberOfCalculations)
-            {
-                ShowCompleteResult();
-            }
-            else
-            {
-                NumberOfTrials = 0;
-                SetLevel(nLevel);
-            }
-        }
-
-        // Berechnung wiederholen
-        public void SameCalculation()
-        {
-            if (NumberOfCalculations == MaxNumberOfCalculations)
-            {
-                ShowCompleteResult();
-            }
-            else
-            {
-                ResetInput();
-            }
-        }
-
-        // Hinweis zur korrekten Lösung
-        public void ShowSolutionNote()
-        {
-            sHint = "Solution";
-            sIcon = "K"; // :|
-            sInput = nResult.ToString().PadLeft(4);
-
-            nNextCalculationTicker = 20;
-        }
-
-        // Nächste Addition
-        public void NextAddition()
-        {
-            if (n1x1CalculationTicker > 0 && n1x1CalculationTicker <= 4)
-            {
-                n1x1CalculationTicker = 40;
-            }
-            ResetCalculations();
-            SetMathOperation(MathOperation.ADD);
-            SetLevel(nLevel);
-        }
-
-        // Nächste Subtraktion
-        public void NextSubtraction()
-        {
-            if (n1x1CalculationTicker > 0 && n1x1CalculationTicker <= 4)
-            {
-                n1x1CalculationTicker = 40;
-            }
-            ResetCalculations();
-            SetMathOperation(MathOperation.SUB);
-            SetLevel(nLevel);
-        }
-
-        // Nächste Multiplikation
-        public void NextMultiplication()
-        {
-            if (n1x1CalculationTicker > 0 && n1x1CalculationTicker <= 4)
-            {
-                n1x1CalculationTicker = 40;
-            }
-            ResetCalculations();
-            SetMathOperation(MathOperation.MUL);
-            SetLevel(nLevel);
-        }
-
-        // Nächste Division
-        public void NextDivision()
-        {
-            if (n1x1CalculationTicker > 0 && n1x1CalculationTicker <= 4)
-            {
-                n1x1CalculationTicker = 40;
-            }
-            ResetCalculations();
-            SetMathOperation(MathOperation.DIV);
-            SetLevel(nLevel);
-        }
-
-        // Nächste 1x1 Aufgabe
+        // Next 1x1 task
         public void Next1x1()
         {
             ResetCalculations();
             n1x1CalculationTicker = 1;
         }
 
-        // Zufällige Operation ermitteln
-        private MathOperation SelectRandomMathOperation()
+        // Next addition
+        public void NextAddition()
         {
-            Random rand = new Random();
-            MathOperation op = (MathOperation)rand.Next(4);
-            return op;
+            if (n1x1CalculationTicker > 0 && n1x1CalculationTicker <= 4)
+            {
+                n1x1CalculationTicker = 200;
+            }
+            ResetCalculations();
+            SetMathOperation(MathOperation.ADD);
+            SetLevel(nLevel);
         }
 
-        // Zufällige Spielstufe ermitteln
-        private int SelectRandomLevel()
+        // Next subtraction
+        public void NextSubtraction()
         {
-            Random rand = new Random();
-            int level = rand.Next(1, 6);
-            return level;
+            if (n1x1CalculationTicker > 0 && n1x1CalculationTicker <= 4)
+            {
+                n1x1CalculationTicker = 200;
+            }
+            ResetCalculations();
+            SetMathOperation(MathOperation.SUB);
+            SetLevel(nLevel);
         }
 
-        // Eingabe überprüfen
+        // Next multiplication
+        public void NextMultiplication()
+        {
+            if (n1x1CalculationTicker > 0 && n1x1CalculationTicker <= 4)
+            {
+                n1x1CalculationTicker = 200;
+            }
+            ResetCalculations();
+            SetMathOperation(MathOperation.MUL);
+            SetLevel(nLevel);
+        }
+
+        // Next division
+        public void NextDivision()
+        {
+            if (n1x1CalculationTicker > 0 && n1x1CalculationTicker <= 4)
+            {
+                n1x1CalculationTicker = 200;
+            }
+            ResetCalculations();
+            SetMathOperation(MathOperation.DIV);
+            SetLevel(nLevel);
+        }
+
+        // Set input value 0 to 9
         public int SetInput(int value)
         {
             int nReturnValue = -1;
@@ -443,7 +430,7 @@ namespace MBLittleProfessor2
                     SetLevel(nLevel);
                     nReturnValue = nOP1X1Input;
                 }
-                
+
                 return nReturnValue;
             }
 
@@ -459,17 +446,17 @@ namespace MBLittleProfessor2
                 {
                     nReturnValue = -1;
                     sHint = "Error!";
-                    sIcon = "L"; // :(
+                    sIcon = "0";
                     NumberOfTrials++;
                     if (NumberOfTrials == MaxNumberOfTrials)
                     {
                         NumberOfCalculations++;
                         NumberOfFalseCalculations++;
                         sRating = sRating + "-";
-                        nSolutionNoteTicker = 20;
+                        nSolutionNoteTicker = 60;
                     }
                     else
-                        nSameCalculationTicker = 20;
+                        nSameCalculationTicker = 60;
 
                     break;
                 }
@@ -479,20 +466,22 @@ namespace MBLittleProfessor2
             {
                 nReturnValue = nInput;
                 sHint = "Correct!";
-                sIcon = "J"; // :)
+                sIcon = "1";
                 NumberOfCalculations++;
                 NumberOfCorrectCalculations++;
                 NumberOfTrials = 0;
                 sRating = sRating + "*";
-                nNextCalculationTicker = 20;
+                nNextCalculationTicker = 60;
             }
 
             sInput = sInput.PadLeft(4);
 
             return nReturnValue;
         }
+        #endregion // GameFunctions
 
-        // Berechnungen zurücksetzen
+        #region GameHelperFunctions
+        // Reset calculations
         public void ResetCalculations()
         {
             NumberOfCalculations = 0;
@@ -502,16 +491,93 @@ namespace MBLittleProfessor2
             sRating = "";
         }
 
-        // Start bze. Reset des Spiels
-        public void Start()
+        // Determine next calculation
+        public void NextCalculation()
         {
-            eOP = MathOperation.ADD;
-            n1x1CalculationTicker = 0;
-            nOP1X1 = -1;
-            nOP1X1Input = -1;
-            nOP1old = nOP2old = -1;
-            nLevel = 0;
-            NextLevel();
+            if (NumberOfCalculations == MaxNumberOfCalculations)
+            {
+                ShowCompleteResult();
+            }
+            else
+            {
+                NumberOfTrials = 0;
+                SetLevel(nLevel);
+            }
         }
+
+        // Repeat calculation
+        public void SameCalculation()
+        {
+            if (NumberOfCalculations == MaxNumberOfCalculations)
+            {
+                ShowCompleteResult();
+            }
+            else
+            {
+                ResetInput();
+            }
+        }
+
+        // Reset input and assemble task calculation
+        public void ResetInput()
+        {
+            if (n1x1CalculationTicker > 0)
+            {
+                sHint = "OP2?";
+                sExercise = "   " + GetMathOperation() + nOP2.ToString().PadLeft(2) + "=";
+            }
+            else
+            {
+                sHint = "Input?";
+                sIcon = "1";
+                sExercise = nOP1.ToString().PadLeft(3) + GetMathOperation() + nOP2.ToString().PadLeft(2) + "=";
+            }
+
+            sInput = "";
+            nInput = -1;
+        }
+
+        // Detect random operation
+        private MathOperation SelectRandomMathOperation()
+        {
+            Random rand = new Random();
+            MathOperation op = (MathOperation)rand.Next(4);
+            return op;
+        }
+
+        // Determine random game level
+        private int SelectRandomLevel()
+        {
+            Random rand = new Random();
+            int level = rand.Next(1, 6);
+            return level;
+        }
+
+        // Show score
+        private void ShowCompleteResult()
+        {
+            int nGrade = MaxNumberOfCalculations - NumberOfCorrectCalculations;
+
+            sExercise = String.Format("+" + NumberOfCorrectCalculations.ToString()).PadLeft(6);
+            sInput = "  -" + NumberOfFalseCalculations.ToString();
+
+            sHint = grading[nGrade];
+
+            if (NumberOfFalseCalculations == 0)
+                nShowCompleteResultTicker = 240;
+            else
+                nShowCompleteResultTicker = 100;
+        }
+
+        // Note for the correct solution
+        public void ShowSolutionNote()
+        {
+            sHint = "Solution";
+            sIcon = "0"; //?
+            sInput = nResult.ToString().PadLeft(4);
+
+            nNextCalculationTicker = 100;
+        }
+        #endregion // GameHelperFunctions
     }
 }

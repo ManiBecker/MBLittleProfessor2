@@ -258,12 +258,14 @@ namespace MBLittleProfessor2
             // draw icon-image on background
             String icon = clLittleProfessor2.GetIcon();
             Image image = Properties.Resources.TI_Little_Professor_Icon_1;
-            if (icon == "J") // :)
+            if (icon == "2")
                 image = Properties.Resources.TI_Little_Professor_Icon_2; 
-            else if (icon == "K") // :|
-                image = Properties.Resources.TI_Little_Professor_Icon_1;
-            else if (icon == "L") // :(
+            else if (icon == "3")
                 image = Properties.Resources.TI_Little_Professor_Icon_3;
+            else if (icon == "4")
+                image = Properties.Resources.TI_Little_Professor_Icon_4;
+            else if (icon == "0")
+                image = Properties.Resources.TI_Little_Professor_Icon_0;
 
             using(image) //if (true) //using (Image image = Properties.Resources.TI_Little_Professor_Icon_1)
             {
