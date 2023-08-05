@@ -5,11 +5,11 @@
  Compiler: MS Visual Studio 2008
  Autor   : Manfred Becker
  E-Mail  : mani.becker@web.de
- Url     : https://github.com/ManiBecker/MBLittleProfessor
+ Url     : https://github.com/ManiBecker/MBLittleProfessor2
  Modul   : MBLittleProfessor2.cs
  Version : 1.00
  Datum   : 15.05.2023
- Änderung: 25.05.2023
+ Änderung: 05.08.2023, 25.05.2023
 
 \****************************************************************************/
 
@@ -153,7 +153,7 @@ namespace MBLittleProfessor2
 
             if (NumberOfFalseCalculations == 0)
             {
-                if (nShowCompleteResultTicker > 60)
+                if (nShowCompleteResultTicker > 300)
                 {
                     if (sIcon == "1")
                         sIcon = "2";
@@ -200,7 +200,7 @@ namespace MBLittleProfessor2
             if (n1x1CalculationTicker > 0 && n1x1CalculationTicker <= 4)
             {
                 n1x1CalculationTickerDivider++;
-                if (n1x1CalculationTickerDivider >= 20)
+                if (n1x1CalculationTickerDivider >= 40)
                 {
                     n1x1CalculationTickerDivider = 0;
                     n1x1CalculationTicker--;
@@ -212,10 +212,10 @@ namespace MBLittleProfessor2
                 sExercise = "   " + GetMathOperation() + "  =";
                 sHint = "+,-,*,/ ?";
             }
-            else if (n1x1CalculationTicker > 4 && n1x1CalculationTicker <= 200)
+            else if (n1x1CalculationTicker > 4 && n1x1CalculationTicker <= 300)
             {
 
-                if (n1x1CalculationTicker == 200)
+                if (n1x1CalculationTicker == 300)
                 {
                     Random rand = new Random();
                     nOP1X1 = rand.Next(1, nMaxOP2);
@@ -255,25 +255,43 @@ namespace MBLittleProfessor2
             switch (eOP)
             {
                 case MathOperation.ADD:
+                    switch (nLevel)
+                    {
+                        case 1: nMinOP1 = 0; nMinOP2 = 0; nMaxOP1 = 9; nMaxOP2 = 9; break;
+                        case 2: nMinOP1 = 1; nMinOP2 = 1; nMaxOP1 = 49; nMaxOP2 = 49; break;
+                        case 3: nMinOP1 = 5; nMinOP2 = 5; nMaxOP1 = 99; nMaxOP2 = 99; break;
+                        case 4: nMinOP1 = 10; nMinOP2 = 10; nMaxOP1 = 199; nMaxOP2 = 99; break;
+                        case 5: nMinOP1 = 200; nMinOP2 = 10; nMaxOP1 = 999; nMaxOP2 = 99; break;
+                    }
+                    break;
                 case MathOperation.SUB:
+                    switch (nLevel)
+                    {
+                        case 1: nMinOP1 = 1; nMinOP2 = 0; nMaxOP1 = 19; nMaxOP2 = 9; break;
+                        case 2: nMinOP1 = 10; nMinOP2 = 0; nMaxOP1 = 99; nMaxOP2 = 99; break;
+                        case 3: nMinOP1 = 10; nMinOP2 = 0; nMaxOP1 = 99; nMaxOP2 = 99; break;
+                        case 4: nMinOP1 = 100; nMinOP2 = 10; nMaxOP1 = 199; nMaxOP2 = 99; break;
+                        case 5: nMinOP1 = 300; nMinOP2 = 10; nMaxOP1 = 999; nMaxOP2 = 99; break;
+                    }
+                    break;
                 case MathOperation.MUL:
                     switch (nLevel)
                     {
-                        case 1: nMinOP1 = 0; nMinOP2 = 0; nMaxOP1 = 10; nMaxOP2 = 10; break;
-                        case 2: nMinOP1 = 1; nMinOP2 = 1; nMaxOP1 = 20; nMaxOP2 = 20; break;
-                        case 3: nMinOP1 = 5; nMinOP2 = 5; nMaxOP1 = 50; nMaxOP2 = 50; break;
-                        case 4: nMinOP1 = 10; nMinOP2 = 10; nMaxOP1 = 99; nMaxOP2 = 99; break;
-                        case 5: nMinOP1 = 100; nMinOP2 = 10; nMaxOP1 = 999; nMaxOP2 = 99; break;
+                        case 1: nMinOP1 = 0; nMinOP2 = 0; nMaxOP1 = 9; nMaxOP2 = 9; break;
+                        case 2: nMinOP1 = 1; nMinOP2 = 0; nMaxOP1 = 49; nMaxOP2 = 49; break;
+                        case 3: nMinOP1 = 5; nMinOP2 = 0; nMaxOP1 = 99; nMaxOP2 = 99; break;
+                        case 4: nMinOP1 = 10; nMinOP2 = 0; nMaxOP1 = 199; nMaxOP2 = 99; break;
+                        case 5: nMinOP1 = 200; nMinOP2 = 10; nMaxOP1 = 999; nMaxOP2 = 99; break;
                     }
                     break;
                 case MathOperation.DIV:
                     switch (nLevel)
                     {
-                        case 1: nMinOP1 = 0; nMinOP2 = 1; nMaxOP1 = 25; nMaxOP2 = 10; break;
-                        case 2: nMinOP1 = 5; nMinOP2 = 1; nMaxOP1 = 50; nMaxOP2 = 25; break;
-                        case 3: nMinOP1 = 10; nMinOP2 = 1; nMaxOP1 = 250; nMaxOP2 = 50; break;
-                        case 4: nMinOP1 = 50; nMinOP2 = 5; nMaxOP1 = 500; nMaxOP2 = 75; break;
-                        case 5: nMinOP1 = 100; nMinOP2 = 10; nMaxOP1 = 999; nMaxOP2 = 99; break;
+                        case 1: nMinOP1 = 0; nMinOP2 = 1; nMaxOP1 = 99; nMaxOP2 = 9; break;
+                        case 2: nMinOP1 = 0; nMinOP2 = 1; nMaxOP1 = 99; nMaxOP2 = 9; break;
+                        case 3: nMinOP1 = 0; nMinOP2 = 1; nMaxOP1 = 199; nMaxOP2 = 9; break;
+                        case 4: nMinOP1 = 0; nMinOP2 = 10; nMaxOP1 = 199; nMaxOP2 = 99; break;
+                        case 5: nMinOP1 = 0; nMinOP2 = 10; nMaxOP1 = 999; nMaxOP2 = 99; break;
                     }
                     break;
             }
@@ -362,7 +380,7 @@ namespace MBLittleProfessor2
         {
             if (n1x1CalculationTicker > 0 && n1x1CalculationTicker <= 4)
             {
-                n1x1CalculationTicker = 200;
+                n1x1CalculationTicker = 300;
             }
             ResetCalculations();
             SetMathOperation(MathOperation.ADD);
@@ -374,7 +392,7 @@ namespace MBLittleProfessor2
         {
             if (n1x1CalculationTicker > 0 && n1x1CalculationTicker <= 4)
             {
-                n1x1CalculationTicker = 200;
+                n1x1CalculationTicker = 300;
             }
             ResetCalculations();
             SetMathOperation(MathOperation.SUB);
@@ -386,7 +404,7 @@ namespace MBLittleProfessor2
         {
             if (n1x1CalculationTicker > 0 && n1x1CalculationTicker <= 4)
             {
-                n1x1CalculationTicker = 200;
+                n1x1CalculationTicker = 300;
             }
             ResetCalculations();
             SetMathOperation(MathOperation.MUL);
@@ -398,7 +416,7 @@ namespace MBLittleProfessor2
         {
             if (n1x1CalculationTicker > 0 && n1x1CalculationTicker <= 4)
             {
-                n1x1CalculationTicker = 200;
+                n1x1CalculationTicker = 300;
             }
             ResetCalculations();
             SetMathOperation(MathOperation.DIV);
@@ -453,10 +471,10 @@ namespace MBLittleProfessor2
                         NumberOfCalculations++;
                         NumberOfFalseCalculations++;
                         sRating = sRating + "-";
-                        nSolutionNoteTicker = 60;
+                        nSolutionNoteTicker = 50;
                     }
                     else
-                        nSameCalculationTicker = 60;
+                        nSameCalculationTicker = 50;
 
                     break;
                 }
@@ -564,16 +582,16 @@ namespace MBLittleProfessor2
             sHint = grading[nGrade];
 
             if (NumberOfFalseCalculations == 0)
-                nShowCompleteResultTicker = 240;
+                nShowCompleteResultTicker = 600;
             else
-                nShowCompleteResultTicker = 100;
+                nShowCompleteResultTicker = 600;
         }
 
         // Note for the correct solution
         public void ShowSolutionNote()
         {
             sHint = "Solution";
-            sIcon = "0"; //?
+            sIcon = "3";
             sInput = nResult.ToString().PadLeft(4);
 
             nNextCalculationTicker = 100;

@@ -19,14 +19,14 @@ namespace MBLittleProfessor2
         /// </summary>
         private static MBLittleProfessor2 clLittleProfessor2;
         private static readonly string sPrgName = "MB Little Professor v2";
-        private static readonly string sPrgDate = "(c)12.05.2023";
+        private static readonly string sPrgDate = "(c)05.08.2023";
         private float fRatio, fDx, fDy;
         private int iMouseXPos, iMouseYPos;
         #endregion // PrivateClassMembers
 
         #region BUTTON-Definition
         enum BUTTON { zero, one, two, three, four, five, six, seven, eight, nine, start, level, rnd, add, sub, mul, div, none };
-        private string[] BUTTONname = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "Start", "Level", "1x1", "+", "-", "*", "/" };
+        private string[] BUTTONname = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "Start", "Level", "1x1", "+", "-", "x", "/" };
         private int[] BUTTONxp1 = { 156, 095, 156, 218, 095, 156, 218, 095, 156, 218, 035, 035, 035, 279, 279, 279, 279 };
         private int[] BUTTONyp1 = { 572, 523, 523, 523, 473, 473, 473, 423, 423, 423, 423, 472, 521, 550, 492, 432, 372 };
         private int[] BUTTONxp2 = { 204, 142, 204, 265, 142, 204, 265, 142, 204, 265, 081, 081, 081, 326, 326, 326, 326 };
@@ -406,6 +406,5 @@ namespace MBLittleProfessor2
                 pictureBoxBackground.Refresh();
             }
         }
-
     }
 }
