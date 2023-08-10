@@ -396,4 +396,6 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
-MBLittleProfessor2/images
+
+# MBLittleProfessor2/images
+/
